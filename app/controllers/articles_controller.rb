@@ -2,7 +2,11 @@ class ArticlesController < ApplicationController
 	http_basic_authenticate_with name: 'dhh', password: 'secret', except: [:index, :show]
 
   def index
-    @articles = Article.all
+    @search = Article.search do
+      fulltext params[:search]
+    end
+    @articles = @search.results
+    #@articles = Article.all
   end
 
 	def show
